@@ -81,6 +81,21 @@ public class DataHelper {
         database.delete(TABLE_NAME,ID+"=?",new String[]{String.valueOf(note.getId())});
     }
 
+    public void removeAllNote(List<Note> list){
+        list.clear();
+        database.execSQL("DROP TABLE "+TABLE_NAME);
+        createNoteDatabase();
+    }
+
+    private void createNoteDatabase(){
+        database.execSQL("CREATE TABLE "+TABLE_NAME+"(" +
+                ID+" INTEGER PRIMARY KEY AUTOINCREMENT," +
+                CONTENT+" TEXT NOT NULL," +
+                TIME+" TEXT NOT NULL," +
+                MODE+" INT DEFAULT 1" +
+                ");");
+    }
+
     public void open(){
         database=helper.getWritableDatabase();
     }

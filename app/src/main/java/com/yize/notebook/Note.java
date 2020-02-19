@@ -1,6 +1,8 @@
 package com.yize.notebook;
 
-public class Note {
+import java.io.Serializable;
+
+public class Note implements Serializable {
     private long id;
     private String content;
     private String time;

@@ -2,12 +2,14 @@ package com.yize.notebook;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yize.notebook.adapter.NoteAdapter;
@@ -27,6 +30,8 @@ import java.util.List;
 import static com.yize.notebook.util.DefaultParams.OPCODE_DELETE_NOTE;
 import static com.yize.notebook.util.DefaultParams.OPCODE_MODIFY_NOTE;
 import static com.yize.notebook.util.DefaultParams.OPCODE_NEW_NOTE;
+import static com.yize.notebook.util.DefaultParams.OPCODE_NOT_MODIFY;
+import static com.yize.notebook.util.DefaultParams.OPEN_MODE_NEW;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private FloatingActionButton fb_add_new_note;
@@ -55,11 +60,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View view) {
                 Log.d(TAG,"fb_add_new_note clicked");
                 Intent intent=new Intent(MainActivity.this,EditActivity.class);
+                intent.putExtra("openMode",OPEN_MODE_NEW);
                 startActivityForResult(intent,0);
             }
         });
         noteList=new ArrayList<>();
-        noteAdapter=new NoteAdapter(noteList);
+        noteAdapter=new NoteAdapter(noteList,this);
         rv_note_list.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         rv_note_list.setAdapter(noteAdapter);
         refreshView();
@@ -97,6 +103,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_main_clear:
+                showWarning();
+                break;
+        }
+        return true;
+    }
+
+    private void showWarning(){
+        AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("确定要清空所有记事本？");
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                helper.open();
+                helper.removeAllNote(noteList);
+                helper.close();
+                refreshView();
+            }
+        });
+        builder.setNegativeButton("取消",(dialog,which)->{
+
+        });
+        builder.show();
+    }
 
     /**
      * Dispatch incoming result to the correct fragment.
@@ -108,10 +141,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         int opcode=data.getIntExtra("opcode",OPCODE_NEW_NOTE);
+
         String content=data.getStringExtra("content");
+        if(opcode!=OPCODE_DELETE_NOTE&&(content==null||content.length()==0)){
+            opcode=OPCODE_NOT_MODIFY;
+        }
         String time=data.getExtras().getString("time");
+        long id=data.getLongExtra("id",-1);
         int mode=data.getIntExtra("mode",1);
         Note note=new Note(content,time,mode);
         helper.open();
@@ -120,19 +157,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 helper.addNote(note);
                 break;
             case OPCODE_DELETE_NOTE:
+                note.setId(id);
                 helper.removeNote(note);
                 break;
             case OPCODE_MODIFY_NOTE:
+                note.setId(id);
                 helper.updateNote(note);
+                break;
+            case OPCODE_NOT_MODIFY:
                 break;
             default:
                 break;
         }
         helper.close();
-        refreshView();
+        if(opcode!=OPCODE_NOT_MODIFY){
+            refreshView();
+        }
     }
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()){
+        }
     }
 }
