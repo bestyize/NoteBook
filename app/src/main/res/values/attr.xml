@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="menu_main_search" format="string"></attr>
+    <attr name="menu_main_delete" format="string"/>
+</resources>

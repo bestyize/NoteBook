@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--https://www.jianshu.com/p/16f9e995e454-->
+    <item
+        android:id="@+id/menu_main_search"
+        app:showAsAction="always"
+        android:title="搜索"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        android:icon="?attr/menu_main_search"></item>
+    <item
+        android:id="@+id/menu_main_clear"
+        android:icon="?attr/menu_main_delete"
+        android:title="清除"
+        app:showAsAction="always"
+        />
+
+</menu>
