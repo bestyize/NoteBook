@@ -5,6 +5,7 @@
     android:background="@color/color_weixin_background_gray"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/main_activity_layout"
     tools:context=".MainActivity">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tb_main"
@@ -30,4 +31,5 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:src="@drawable/ic_add_white_24dp" />
+
 </RelativeLayout>

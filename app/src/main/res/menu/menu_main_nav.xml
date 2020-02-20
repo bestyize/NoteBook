@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/menu_main_nav_setting"
+            android:title="设置"
+            android:icon="@drawable/ic_settings_black_24dp"></item>
+        <item android:id="@+id/menu_main_nav_contact"
+            android:title="联系人"
+            android:icon="@drawable/ic_contact_phone_black_24dp"></item>
+        <item android:id="@+id/menu_main_nav_location"
+            android:title="位置"
+            android:icon="@drawable/ic_location_on_black_24dp"></item>
+    </group>
+</menu>

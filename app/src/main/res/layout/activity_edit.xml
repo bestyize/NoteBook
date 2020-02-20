@@ -15,10 +15,16 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
     </androidx.appcompat.widget.Toolbar>
-    <EditText
-        android:id="@+id/et_note"
-        android:gravity="top"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="400dp"></EditText>
+        android:layout_height="match_parent">
+        <EditText
+            android:id="@+id/et_note"
+            android:gravity="top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="400dp"></EditText>
+    </ScrollView>
+
 
 </LinearLayout>
